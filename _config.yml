@@ -93,13 +93,13 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
+  name             : "장창환"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
+  bio              : ""
   location         : "대한민국 서울"
   email            : "462356@gmail.com"
   links:
-    - label: "Email"
+    - label: "이메일 보내기"
       icon: "fas fa-fw fa-envelope-square"
       # url: "mailto:your.name@email.com"
     - label: "Website"
