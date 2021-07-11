@@ -13,5 +13,6 @@ last-modified-at: 2021-07-10
 
 ## CTRL+C를 누르면 '복사라고 말해 줘요.
 
-[다운로드](python/ctrlc.py)
+[다운로드](https://github.com/JangChangHwan/jangchanghwan.github.io/tree/master/_posts/python/controlc.py, "controlc.py")
+
 
