@@ -48,7 +48,7 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 ```
 
 
-## 2. 메모장 ㅂㅂ언시이인~~
+## 2. 메모장 비언~ 시이인~~
 위치: appModules/
 이름: notepad.py
 
