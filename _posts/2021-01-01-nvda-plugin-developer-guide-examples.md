@@ -131,3 +131,23 @@ class GlobalPlugin(globalPluginHandler.GlobalPlugin):
 		resultList = ['틀린 문구: %s\n추천 문구: %s\n도움말: %s' % (d['orgStr'], d['candWord'], d['help']) for d in errList]
 		ui.browseableMessage('\n'.join(resultList), '맞춤법 검사 결과')
 ```
+
+## 5. 왜 말을 잘라먹니?
+
+위치: appModules\
+
+이름: notepad.py
+
+```python
+from NVDAObjects.window.edit import EditTextInfo
+import appModuleHandler
+
+class AppModule(appModuleHandler.AppModule):
+	def event_NVDAObject_init(self, obj):
+		if obj.windowClassName == 'Edit':
+			obj.TextInfo = NewEditTextInfo
+
+class NewEditTextInfo(EditTextInfo):
+	useUniscribe = False
+```
+
