@@ -20,11 +20,11 @@ last-modified-at: 2022-05-20
 
 ## 2. 오토잇 설치
 
-오토잇은 https://www.autoitscript.com에서 다운로드 할 수 있습니다. 귀찮은 분들은 아래 링크에서 곧바로 다운로드 받을 수 있습니다.
+오토잇은 <https://www.autoitscript.com>에서 다운로드 할 수 있습니다. 귀찮은 분들은 아래 링크에서 곧바로 다운로드 받을 수 있습니다.
 
-https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.zip
+<https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.zip>
 
-2022년 5월 현재 최신 버전은 3.3.16.0이며, 22년 3월 6일에 업데이트 되었습니다. 설치 옵션은 변경할 필요가 없습니다. 디폴트로 설치하세요. 
+2022년 5월 현재 최신 버전은 3.3.16.0이며, 22년 3월 6일에 업데이트 되었습니다. zip 압축을 해제하고 설치 프로그램을 실행하세요. 설치 옵션은 변경할 필요가 없습니다. 디폴트로 설치하세요. 
 
 이제 오토잇으로 코딩할 준비가 끝났습니다.
 
