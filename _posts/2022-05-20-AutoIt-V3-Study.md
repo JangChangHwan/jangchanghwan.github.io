@@ -1125,6 +1125,8 @@ GUICreate 함수가 정상적으로 실행되면 대화상자의 핸들을 반�
 
 ### 19_button.au3
 
+```autoit
+
 $hWin = GUICreate("버튼을 누르면 프로그램이 종료됩니다.", 500, 400)
 $idButton = GUICtrlCreateButton("종료", 100, 100, 300, 100)
 GUISetState(@SW_SHOW)
