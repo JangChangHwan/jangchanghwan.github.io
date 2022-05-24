@@ -1055,4 +1055,328 @@ Return 키워드는 함수의 결과를 함수 밖으로 돌려주는 역할을 
 
 
 
+## 20. GUI 개요
+
+GUI는 일반적인 윈도우 프로그램을 말합니다. GUI는 'graphical user interface'의 첫 글자를 딴 것입니다. 마이크로소프트 윈도우즈가 출시되기 전까지 도스(DOS)라는 운영체제를 사용했습니다. 검정색 바탕에 하얀 글자만으로 되어 있었습니다. 텍스트 위주의 운영체제와 대비하는 측면에서 GUI라는 말이 생겨났습니다. 오토잇은 비교적 GUI를 쉽게 구현할 수 있습니다. 시각장애인이 손쉽게 구현할 수 있지만 반응속도가 상대적으로 느린 단점이 있습니다.
+
+오토잇에서 GUI를 구현할 때 대화상자를 윈도우라 부르고 윈도우 내에 배치되는 것들을 컨트롤이라 부릅니다. 윈도우는 핸들(handle)로 제어하고 컨트롤은 아이디(id)로 제어합니다. 
+
+GUI는 이벤트를 중심으로 동작합니다. 대화상자에서 버튼을 클릭할 때, 편집창에 입력할 때 등 어떠한 동작이 일어날 때 그 동작과 관련된 함수가 따라서 동작합니다. 앞의 것을 이벤트라 부르고 뒤의 것을 이벤트처리함수(event handler)이라고 부릅니다. 오토잇의 GUI를 만들 수 있다면 여타 다른 프로그래밍 언어에서도 도움을 받을 수 있을 겁니다.
+
+오토잇에는 메시지루프모드, 온이벤트모드 두 가지로 GUI를 구현할 수 있습니다. 경우에 따라 두 가지 형식 중 하나를 선택하세요. 
+
+
+
+## 21. 대화상자 만들기
+
+대화상자를 만들려면 GUICreate 함수와 GUISetState 함수를 사용합니다.
+
+### 17_window.au3
+
+```autoit
+
+$hWin = GUICreate("5초 후 자동으로 사라집니다.", 600, 400)
+GUISetState(@SW_SHOW)
+
+For $i=1000 To 600 Step -100
+Beep($i, 100)
+Sleep(1000)
+Next
+
+```
+
+GUICreate는 대화상자를 만듭니다. 첫번째 매개변수는 대화상자의 제목표시줄에 들어갈 문자열입니다. 두번째 매개변수는 대화상자의 가로길이며 세번째 매개변수는 세로길이입니다. 단위는 픽셀입니다.
+
+GUISetState는 대화상자의 상태를 정할 수 있습니다. '@SW_'로 시작하는 매크로를 사용하세요.
+
+- @SW_SHOW: : 대화상자를 화면에 표시합니다.
+- @SW_HIDE: 대화상자를 화면에서 숨깁니다. 프로그램이 종료된 것과는 다릅니다.
+- @SW_MAXIMIZE: 화면 가득 대화상자를 최대화합니다.
+- @SW_MINIMIZE: 화면을 최소화합니다. 작업표시줄에 아이콘으로 표시됩니다.
+
+이외에도 @SW_로 시작하는 매크로들이 있습니다. 메뉴얼에서 찾아 보세요.
+
+만약 대화상자를 여러 개 만들었다면 그것드르이 상태는 어떻게 지정할 수 있을까요?
+
+### 18_multiWindow.au3
+
+```autoit
+
+$hWin1 = GUICreate("첫번째 윈도우")
+$hWin2 = GUICreate("두번째 윈도우")
+$hWin3 = GUICreate("세번째 윈도우")
+
+GUISetState(@SW_SHOW, $hWin1)
+Sleep(3000)
+GUISetState(@SW_SHOW, $hWin3)
+Sleep(3000)
+GUISetState(@SW_SHOW, $hWin2)
+Sleep(3000)
+
+```
+
+GUICreate 함수가 정상적으로 실행되면 대화상자의 핸들을 반환합니다. $hWin에는 그 핸들값이 저장됩니다. 이 핸들을 사용하여 GUISetState함수는 어떤 대화상자를 표시할지 숨길지 선택할 수 있습니다.
+
+
+
+## 21. 버튼
+
+대화상자에 첫번째로 들어갈 부품은 버튼입니다. 버튼을 누르면 프로그램이 종료되는 코드를 만들어 보겠습니다. d이 예제는 메시지루프 방식으로 되어 있습니다. 
+
+### 19_button.au3
+
+$hWin = GUICreate("버튼을 누르면 프로그램이 종료됩니다.", 500, 400)
+$idButton = GUICtrlCreateButton("종료", 100, 100, 300, 100)
+GUISetState(@SW_SHOW)
+
+While 1
+Switch GUIGetMsg()
+Case $idButton
+MsgBox(0, "알림", "프로그램을 종료합니다.", 0, $hWin)
+ExitLoop
+EndSwitch
+WEnd
+
+```
+
+GUICtrlCreateButton은 버튼을 만드는 함수입니다. 윈도우핸들을 지정하지 않아도 가장 최근에 만들어진 윈도우에 버튼이 들어 갑니다.
+
+첫번째 매개변수는 버튼에 표시될 텍스트입니다.
+
+두번째부터 순서대로 윈도우 왼쪽 끝까지 거리, 윈도우 위쪽 끝까지 거리, 버튼의 가로 길이, 버튼의 세로 길이입니다.
+
+윈도우 왼쪽 최상단의 좌표를 (0, 0)이라 하면 두번째, 세번째 매개변수는 버튼의 왼쪽 최상단 좌표입니다. 
+
+버튼과 같은 윈도우의 부품들을 오토잇에서는 컨트롤이라 부르고 컨트롤은 컨트롤 아이디로 제어합니다. GUICtrlCreate....함수들이 성공적으로 실행되면 해당 컨트롤의 ID가 반환됩니다.
+
+메시지루프 방식으로 동작하는 GUI 프로그램은 GUIGetMsg 함수를 사용해서 윈도우 안에서 어떤 일이 발생했는지를 체크합니다. 만약 버튼을 눌렀다면 $idButton이 반환됩니다. 버튼을 누르면 메시지상자가 나타납니다. 
+
+MsgBox의 네번째 매개변수는 지연시간입니다. 단위는 초이며 0이면 무한 대기, 5이면 5초 후에 자동으로 메시지상자가 사라집니다. 다섯번째 매개변수는 부모윈도우의 핸들입니다. 윈도우의 각 부품들은 자신의 소속을 명시적으로 표시할 수 있습니다. MsgBox 함수에서 마지막 매개변수를 삭제하고 실행해 보세요. 그리고 두 경우의 차이점이 무엇인지 살펴 보세요.
+
+
+
+## 22. 라벨과 한줄 편집창
+
+이번에는 라벨 컨트롤과 편집창 컨트롤을 익혀 봅시다.
+
+라벨은 고정텍스트(StaticText)라고도 하고 GUICtrlCreateLabel 함수로 만듭니다. 대화상자에 단순한 텍스트를 표시하기 위해 사용합니다. 고정텍스트는 특별한 일을 하지 않으므로 굳이 반환값을 변수에 저장할 필요는 없습니다. 하지만 텍스트 내용을 변경시킬 예정이라면 라벨 컨트롤의 아이디를 반드시 변수에 저장하세요.
+
+편집창에는 두 종류가 있습니다. 오늘은 한 줄짜리 input 편집창을 알아 보겠습니다. 한 줄 편집창은 GUICtrlCreateInput 함수로 만듭니다. 우리가 편집창에 어떤 문자열을 입력한다면 GUICtrlRead 함수로 그것을 읽어 들일 수 있습니다. 반대로 GUICtrlSetData 함수를 사용하면 편집창에 원하는 문자열을 입력할 수도 있습니다. 예제에서 확인해 봅시다.
+
+자! 지난 시간에 배운 버튼도 활용해서 GUI 버전 계산기 프로그램을 만들어 봅시다.
+
+### 20_winCalc.au3
+
+```autoit
+
+$hWin = GUICreate("GUI 계산기", 300, 150)
+
+$idLabel = GUICtrlCreateLabel("수식을 입력하세요.", 0, 0, 300, 50)
+$idInput = GUICtrlCreateInput("", 0, 50, 300, 50)
+
+$idButtonOK = GUICtrlCreateButton("계산", 0, 100, 150, 50)
+$idButtonExit = GUICtrlCreateButton("종료", 150, 100, 150, 50)
+
+Local $aAccelKeys = [["{enter}", $idButtonOk]]
+GUISetAccelerators($aAccelKeys)
+GUISetState(@SW_SHOW)
+
+While 1
+Switch GUIGetMsg()
+Case $idButtonOk
+$s = GUICtrlRead($idInput)
+$Result = Execute($s)
+GUICtrlSetData($idInput, $Result)
+Case $idButtonExit 
+ExitLoop
+Case $GUI_EVENT_CLOSE
+ExitLoop
+EndSwitch
+WEnd
+
+```
+
+GUICtrlCreateLabel 함수로 라벨을 만들었습니다. 첫번째 매개변수에는 라벨에 들어갈 텍스트입니다. 나머지 네 가지는 각각 왼쪽 간격, 상단 간격, 가로 폭, 세로 높이를 의미합니다. 이것을 간단하게 Left, Top, Width, Height란 단어로 표시하기도 합니다.
+
+GUICtrlCreateInput으로 한 줄 편집창을 만들었습니다. 첫번째 매개변수는 편집창에 들어갈 디폴트 문자열입니다. 나머지는 Left, Top, Width, Height입니다.
+
+편집창이 포커스될 때 편집창 왼쪽에 라벨이 있으면 그 라벨을 읽어 주고 위에 라벨이 있으면 그 라벨을 읽어 줍니다.
+
+이 예제에는 버튼이 두 개 있습니다. 계산 버튼을 누르면 편집창에 입력된 내용을 읽어 와서 계산을 한 후 그 결과를 다시 편집창에 기록할 것입니다. 종료 버튼을 누르면 이 프로그램이 종료됩니다.
+
+이 예제는 전형적인 메시지루프 방식으로 작성되었습니다. GUIGetMsg 함수는 While 1로 인해 무한 반복하며 이 윈도ㅜ 전체를 감시합니다. 그러다 버튼이 눌리기만 하면 그것을 알아내서 특정한 동작을 시킵니다.
+
+GUIGetMsg 함수로 알아낸 값에는 윈도우 컨트롤들의 ID 값이 있습니다. 만약 GUIGetMsg가 알아낸 반환값이 계산버튼이라면 Case $idButtonOk 아래에 있는 코드가 실행됩니다. 만약 종료 버튼을 누른다면 ExitLoop 키워드가 동작하면서 While 반복문이 종료될 것이고 그 이하에 아무런 코드가 없기 때문이 이 프로그램 자체가 종료될 것입니다.
+
+계산 버튼을 누르면 GUICtrlRead 함수는 한 줄 편집창에 씌여진 문자열을 읽습니다. 그것을 Execute 함수로 계산하고 그 결과를 $Result에 저장합니다. 마지막으로 GUICtrlSetData 함수는 한 줄 편집창에 결과 변수 $Result의 내용을 적어 넣습니다.
+
+컨트롤에서 값을 읽어 올 때에도 값을 쓸 때에도 모두 컨트롤의 아이디를 쓰고 있다는 점에 주목하세요.
+
+그런데 매번 계산 버튼을 누르는 건 너무 비효율적입니다. 그래서 엔터키만 치면 계산 버튼이 눌러지도록 단축키를 등록했습니다.
+
+GUISetAccelerators 함수는 대화상자에 단축키를 지정할 수 있게 합니다. 매개변수로는 2차원 배열을 넣어줘야 합니다. 
+
+- $aKeys[0n[0] = 단축키 문자열 예: "^c" CTRL+C
+- $aKeys[n][1] = 컨트롤 ID 예: $idButton
+
+이제 편집창에서 수식을 입력하고 엔터키를 눌러 보세요. 곧바로 계산 결과가 나타날 겁니다.
+
+
+
+## 23. 온이벤트모드
+
+온이벤트모드는 메시지루프와 코딩 스타일이 다릅니다. 핵심은 윈도우에 들어간 부품(컨트롤)들이 동작할 때 그 동작과 함수를 하나로 묶는 것에 있습니다. 일단 아래 코드를 봅시다.
+
+### 21_login.au3
+
+```autoit
+
+#Include<editConstants.au3>
+#Include<GUIConstantsEx.au3>
+
+Opt("GUIOnEventMode", 1)
+
+$hWin = GUICreate("로그인", 600, 150)
+GUISetOnEvent($GUI_EVENT_CLOSE, "OnClose")
+
+$idLabelID = GUICtrlCreateLabel("아이디", 0, 0, 200, 50)
+$idInputID = GUICtrlCreateInput("", 200, 0, 200, 50)
+
+$idLabelPW = GUICtrlCreateLabel("비밀번호", 0, 50, 200, 50)
+$idInputPW = GUICtrlCreateInput("", 200, 50, 200, 50, $ES_PASSWORD)
+
+$idButtonOK = GUICtrlCreateButton("확인", 200, 100, 100, 50)
+GUICtrlSetOnEvent($idButtonOK, "OnButtonOK")
+$idButtonCancel = GUICtrlCreateButton("취소", 300, 100, 100, 50)
+GUICtrlSetOnEvent($idButtonCancel, "OnClose")
+
+GUISetState(@SW_SHOW)
+
+While 1
+Sleep(100)
+WEnd
+
+Func OnClose()
+MsgBox(0, "알림", "프로그램을 종료합니다.", 0, $hWin)
+Exit
+EndFunc
+
+Func OnButtonOK()
+$sID = GUICtrlRead($idInputID)
+$sPW = GUICtrlRead($idInputPW)
+If $sID <> "abcd" Then
+MsgBox(0, "알림", "아이디가 잘못되었습니다. 다시 입력하세요.", 0, $hWin)
+Return
+ElseIf $sPW <> "1234" Then
+MsgBox(0, "알림", "비밀번호가 잘못되었습니다. 다시 입력하세요.", 0, $hWin)
+Return
+Else
+MsgBox(0, "성공", "로그인에 성공했습니다. 프로그램을 종료합니다.", 0, $hWin)
+Exit
+EndIf
+EndFunc
+
+```
+
+GUIConstantsEx.au3에는 GUI를 만들 때 사용할 수 있는 상수가 정의되어 있습니다. 
+
+Opt 함수로 오토잇의 환경설정을 할 수 있습니다. 만약 GUI를 온이벤트모드로 만들고 싶다면 아래와 같이 쓰세요.
+
+Opt("GUIOnEventMode", 1)
+
+만약 0으로 지정하면 메시지루프가 됩니다. 이런 내용이 전혀 없다면 오토잇은 자동으로 메시지루프 스타일로 GUI를 구현합니다.
+
+GUISetOnEvent 함수는 대화상자의 이벤트와 이벤트 처리 함수를 연결합니다. $GUI_EVENT_CLOSE는 대화상자가 종료될 때 발생하는 이벤트입니다. 대화상자에서 ALT+F4를 누르면 이 이벤트가 발생합니다. 이 이벤트가 발생하면 OnClose라는 함수가 동작하라고 위와 같이 GUISetOnEvent로 연결한 것입니다.
+
+GUICtrlSetOnEvent는 컨트롤과 이벤트 처리 함수를 연결합니다. 컨트롤은 컨트롤ID로 지정하세요. 나머지 요령은 GUISetOnEvent와 같습니다.
+
+메시지루프에서는 While 사이에 GUIGetMsg 함수를 넣었습니다. 반면 온이벤트모드에서는 While에는 Sleep(100)이 들어 있습니다. Sleep를 넣지 않으면 오토잇이 불필요하게 CPU를 점유합니다. 메시지루프 모드에서는 Sleep를 넣지 않아도 됩니다. 오토잇이 적절히 조절해 줍니다.
+
+
+
+## 24. 메뉴바
+
+오토잇은 아주 쉽게 메뉴바를 만들 수 있습니다. 다음 코드를 봅시다.
+
+### 22_menuBar.au3
+
+```autoit
+
+#Include<GuiConstantsEx.au3>
+#Include<editConstants.au3>
+#Include<MsgBoxConstants.au3>
+
+Opt("GUIOnEventMode", 1)
+
+$hWin = GUICreate("제목 없음 - AutoIt 메모장", 800, 600)
+GUISetOnEvent($GUI_EVENT_CLOSE, "OnClose")
+
+; 메뉴바
+$idMenuFile = GUICtrlCreateMenu("파일(&F)")
+$idFileOpen = GUICtrlCreateMenuItem("열기(&O)", $idMenuFile)
+GUICtrlSetOnEvent($idFileOpen, "OnFileOpen")
+$idFileClose = GUICtrlCreateMenuItem("종료(&X)", $idMenuFile)
+GUICtrlSetOnEvent($idFileClose, "OnClose")
+
+$idMenuEdit = GUICtrlCreateMenu("편집(&E)")
+
+;메인 편집창
+$idEdit = GUICtrlCreateEdit("", 0, 0, 800, 600, $ES_MULTILINE)
+GUISetState(@SW_SHOW)
+
+While 1
+Sleep(100)
+WEnd
+
+Func OnClose()
+If MsgBox(1, "알림", "프로그램을 정말 종료할까요?", 0, $hWin) == $IDOK Then Exit
+EndFunc
+
+Func OnFileOpen()
+$sFile = FileOpenDialog("텍스트 파일 열기", @WorkingDir, "텍스트 파일 (*.txt)", 0, "", $hWin)
+If @Error Then Return
+$f = FileOpen($sFile)
+$sText = FileRead($f)
+FileClose($f)
+GUICtrlSetData($idEdit, $sText)
+EndFunc
+
+```
+
+풀다운 메뉴를 추가하려면 GUICtrlCreateMenu 함수를 사용합니다.
+
+매개변수로 메뉴에 들어갈 텍스트를 적어 주면 됩니다. 만약 ALT 키와 조합한 단축키를 만드려면 '&' 뒤에 영어를 붙여 주세요. &F라 하면 ALT+F가 됩니다.
+
+파일 메뉴에 속하는 하위 메뉴를 만들려면 GUICtrlCreateMenuItem 함수를 사용합니다. 첫번째 매개변수에는 메뉴에 들어갈 텍스트이며, 두번째 매개변수는 이 메뉴아이템이 들어갈 상위 메뉴의 컨트롤ID입니다.
+
+만약 단축키를 지정하고 싶으면 '&' 뒤에 영어를 넣어 주세요. 이 단축키는 ALT키와 조합되지 않습니다. ALT+F를 누른 후 해당 영문키를 누르면 하위 메뉴가 곧바로 실행됩니다.
+
+열기 메뉴를 선택했을 때 실행되는 함수는 앞서 등장했던 GUICtrlSetOnEvent를 사용합니다.
+
+열기 메뉴를 선택하면 파일 열기 대화상자가 나타납니다. 파일 열기 대화상자는 FileOpenDialog 함수를 사용합니다. 파일을 선택하면 그 결과가 $sFile에 들어 갑니다.
+
+## 25. 파일 열기
+
+컴퓨터는 정말로 파일 읽고 쓰기를 잘 합니다. 엄청나게 자주 그런 일을 하지요. 오토잇은 FileOpen 함수를 사용해서 파일을 읽고 쓸 수 있습니다.
+
+파일을 다루기 위해서 먼저 파일의 핸들을 얻어야 합니다. 파일 핸들은 FileOpen 함수를 사용합니다.
+
+첫번째 매개변수는 파일의 전체 주소입니다. 두번째 매개변수를 넣지 않으면 텍스트 읽기 모드로 동작합니다.
+
+$f에는 파일 핸들이 저장되는데 이것을 사용하여 파일에서 텍스트를 읽어 들입니다. FileRead($f)가 그런 일을 합니다.
+
+파일에 대한 작업을 다 마치면 반드시 파일 핸들을 FileClose로 닫아 주어야 합니다. 파일 핸들이 열려 있으면 다른 프로그램이 이 파일에 접근하거나 수정할 수 없습니다.
+
+파일 내용을 $sText에 저장했다면 이것을 메인 편집창에 집어 넣을 수 있습니다. 이때 사용하는 함수가 바로 GUICtrlSetData입니다.
+
+첫번째 매개변수에는 데이터를 쓸 컨트롤ID입니다. 두번째 매개변수는 데이터입니다.
+
+이제 우리가 고른 파일의 내용이 편집창에 나타날 것입니다. 멀티라인 편집창은 GUICtrlCreateEdit 함수를 사용합니다. 스타일을 $ES_MULTILINE로 지정해야 멀티라인 편집창으로 사용할 수 있습니다.
+
+파일을 쓰려면 FileOpen 함수와 FileWrite 함수에 대해 조금 더 자세히 알아야 합니다. 분량이 많아져서 여기에서는 생략하겠습니다. 메뉴얼을 참고해 주세요.
+
+이 정도면 GUI의 기초는 설명했다고 할 수 있습니다.
+
+
+
 --- To be continued ---
