@@ -1063,10 +1063,6 @@ Return 키워드는 함수의 결과를 함수 밖으로 돌려주는 역할을 
 - MP3DirectCut 프로그램이 비활성화되면 단축키도 비활성화 된다.
 - MP3DirectCut 프로그램이 종료되면 단축키 프로그램도 자동으로 종료된다.
 
-실험용 MP3DirectCut.exe는 아래 링크에서 다운로드 받으세요.
-
-<https://github.com/JangChangHwan/jangchanghwan.github.io/blob/master/_posts/mp3DirectCut.exe?raw=True>
-
 코드는 다음과 같습니다.
 
 ### 17_mp3dc.au3
