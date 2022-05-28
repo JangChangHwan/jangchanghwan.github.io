@@ -1065,7 +1065,7 @@ Return 키워드는 함수의 결과를 함수 밖으로 돌려주는 역할을 
 
 실험용 MP3DirectCut.exe는 아래 링크에서 다운로드 받으세요.
 
-<https://./MP3DirectCut.exe>
+<https://github.com/JangChangHwan/jangchanghwan.github.io/blob/master/_posts/mp3DirectCut.exe>
 
 코드는 다음과 같습니다.
 
