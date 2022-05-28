@@ -932,7 +932,7 @@ WEnd
 
 반복을 강제로 종료할 때 ExitLoop를 쓴다면 불필요한 코드를 반복하지 않고 건너 뛰게 하는 ContinueLoop 키워드도 있습니다. 
 
-### 14_continue.au3
+### 13_continue.au3
 
 ```autoit
 
