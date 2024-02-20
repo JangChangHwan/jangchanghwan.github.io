@@ -3,8 +3,8 @@ title: "메모장으로 C 언어 공부하기"
 excerpt: ""
 categories: "blog"
 toc: true
-date: 2024-03-16
-last-modified-at: 2024-03-16
+date: 2024-02-19
+last-modified-at: 2024-02-19
 ---
 
 
