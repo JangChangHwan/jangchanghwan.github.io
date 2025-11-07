@@ -158,7 +158,7 @@ class AppModule(appModuleHandler.AppModule):
 			api.copyToClip(total_text)
 			msg = f"{len(new_text)}글자를 이어 붙였습니다. 총 {len(total_text)}글자가 클립보드에 있습니다."
 			ui.message(msg)
-'''
+```
 
 
 ### 8.3. 디버깅하기
