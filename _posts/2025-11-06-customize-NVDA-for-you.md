@@ -104,19 +104,77 @@ NVDA에는 플러그인을 개발하고 테스트할 수 있는 특수한 폴더
 
 NVDA를 재시작하면 scratchpad 폴더가 활성화 됩니다.
 
-scratchpad 폴더는 다음과 같이 열 수 있습니다.
 
-1. 파일 탐색기를 실행합니다.
-2. Alt+D를 누릅니다.
-3. %appdata%<엔터>
-4. nvda 폴더에 들어가면 scratchpad를 찾을 수 있습니다.
+## 8\. 플러그인 개발 실습
 
-scratchpad 폴더에는 다음과 같이 주목할 두 개의 폴더가 있습니다.
+메모장에 새로운 기능을 추가해 보겠습니다. 
+센스리더에는 control+r 이어 붙이기 기능이 있습니다. 
+메모장에 이 기능을 추가해 보겠습니다. 
 
-1. appModules: 앱모듈을 테스트하는 곳
-2. globalPlugins: 글로벌 플러그인을 테스트하는 곳.
 
-## 8\. 앱모듈 실습
+### 8.1. NVDA 사용자 환경 폴더 열기
 
-메모장을 열어 보세요.
+시작 메뉴 검색창에 "nvda 사"까지 입력하고 엔터키를 누르세요. 
+
+파일탐색기에서도 조금 번잡하지만 열 수 있습니다. 
+
+1. 파일탐색기를 엽니다.: 윈도우+e
+1. 주소 입력창으로 이동합니다: alt+d
+1. %appdata%를 입력하고 엔터키를 누릅니다.
+1. nvda 폴더를 찾아서 엔터키를 누릅니다. 
+
+
+### 8.2. 메모장 앱모둘 파일 만들기
+
+메모장 프로그램의 실행파일 이름은 notepad.exe입니다. 
+앱모듈 파일의 이름은 .exe대신 .py를 넣습니다. 
+바로 notepad.py입니다. 
+
+다음과 같이 앱모듈 파일을 만듭니다.
+
+1. scratchpad 폴더로 들어 갑니다.
+1. appModules 폴더에 들어갑니다.
+1. notepad.py라는 이름을 가진 텍스트 파일을 만듭니다. 
+1. 위 파일에 아래 내용을 입력하고 저장합니다.
+
+```python
+import appModuleHandler
+import scriptHandler
+import api
+import ui
+
+class AppModule(appModuleHandler.AppModule):
+	@scriptHandler.script(gesture="kb:control+r")
+	def script_relay_copy(self, gesture):
+		focus = api.getFocusObject()
+		info = focus.makeTextInfo("selection")
+
+		if info.isCollapsed:
+			ui.message("텍스트가 선택되지 않았습니다.")
+		else:
+			clip_text = api.getClipData() 
+			new_text = info.text
+			total_text = clip_text + new_text
+			api.copyToClip(total_text)
+			msg = f"{len(new_text)}글자를 이어 붙였습니다. 총 {len(total_text)}글자가 클립보드에 있습니다."
+			ui.message(msg)
+'''
+
+
+### 8.3. 디버깅하기
+
+준비가 되었습니다. 
+NVDA를 재시작하고 메모장에 들어가 보세요. 
+control+c와 control+r 단축키를 테스트해 보세요. 
+문제가 있다면다음을 따라 원인을 파악합니다. 
+
+1. NVDA 메뉴 -> 도구 -> 로그 보기 메뉴를 실행합니다.
+1. 로그 보기 대화상자가 열리면 맨 아랫줄로 내려가서 최신 오류 메시지를 찾아 봅니다.
+1. 오류 메시지에 따라 코드를 수정하세요.
+
+
+### 8.4. 기타 유용한 도구들
+
+1. insert+f1: 개발자 로그 보기 기능
+1. control+insert+z: 개발자 파이썬 콘솔 활성화
 
